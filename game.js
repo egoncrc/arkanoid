@@ -38,6 +38,16 @@ const BLOCK_GAP = 4;
 const BLOCK_TOP_MARGIN = 40;
 const BLOCK_COLORS = [ 'red', 'yellow', 'cyan', 'magenta', 'hotpink', 'green' ];
 
+const LEVELS = [
+  { rows: [ 'XXXXXXXXXX', 'XXXXXXXXXX', 'XXXXXXXXXX', 'XXXXXXXXXX', 'XXXXXXXXXX', 'XXXXXXXXXX' ], ballSpeed: 5 },
+  { rows: [ 'XXXXXXXXXX', 'XXXXXXXXXX', 'XXXXXXXXXX', 'XXXXXXXXXX', 'XXXXXXXXXX', 'XXXXXXXXXX', 'XXXXXXXXXX' ], ballSpeed: 5.5 },
+  { rows: [ '...XXXX...', '..XXXXXX..', '.XXXXXXXX.', 'XXXXXXXXXX', '.XXXXXXXX.', '..XXXXXX..', '...XXXX...' ], ballSpeed: 6 },
+  { rows: [ 'XXXXXXXXXX', 'X.X.X.X.X.', 'XXXXXXXXXX', '.X.X.X.X.X', 'XXXXXXXXXX', 'X.X.X.X.X.', 'XXXXXXXXXX', '.X.X.X.X.X' ], ballSpeed: 6.5 },
+  { rows: [ 'XXXXXXXXXX', 'XXXXXXXXXX', 'XXXXXXXXXX', 'XXXXXXXXXX', 'XXXXXXXXXX', 'XXXXXXXXXX', 'XXXXXXXXXX', 'XXXXXXXXXX', 'XXXXXXXXXX' ], ballSpeed: 7 },
+];
+
+const LEVEL_TRANSITION_DURATION = 2000; // ms
+
 function initBlocks() {
   const totalWidth = BLOCK_COLS * BLOCK_WIDTH + ( BLOCK_COLS - 1 ) * BLOCK_GAP;
   const leftMargin = ( canvas.width - totalWidth ) / 2;
