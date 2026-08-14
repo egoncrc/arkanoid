@@ -94,7 +94,20 @@ function drawScore() {
   ctx.fillStyle = '#fff';
   ctx.textAlign = 'left';
   ctx.font = '16px sans-serif';
-  ctx.fillText( `Puntaje: ${ state.score }`, 10, 20 );
+  const scoreText = `Puntaje: ${ state.score }`;
+  ctx.fillText( scoreText, 10, 20 );
+
+  const livesLabel = 'Vidas: ';
+  const livesLabelX = 10 + ctx.measureText( scoreText ).width + 30;
+  ctx.fillText( livesLabel, livesLabelX, 20 );
+
+  const LIFE_ICON_SIZE = 12;
+  const LIFE_ICON_GAP = 6;
+  const iconsStartX = livesLabelX + ctx.measureText( livesLabel ).width;
+  for ( let i = 0; i < state.lives; i++ ) {
+    const iconX = iconsStartX + i * ( LIFE_ICON_SIZE + LIFE_ICON_GAP );
+    drawSprite( ctx, 'ball', iconX, 8, LIFE_ICON_SIZE, LIFE_ICON_SIZE );
+  }
 }
 
 function drawGameOverScreen() {
