@@ -131,6 +131,9 @@ function drawScore() {
     const iconX = iconsStartX + i * ( LIFE_ICON_SIZE + LIFE_ICON_GAP );
     drawSprite( ctx, 'ball', iconX, 8, LIFE_ICON_SIZE, LIFE_ICON_SIZE );
   }
+
+  const levelTextX = iconsStartX + state.lives * ( LIFE_ICON_SIZE + LIFE_ICON_GAP ) + 20;
+  ctx.fillText( `Nivel: ${ state.level }/${ LEVELS.length }`, levelTextX, 20 );
 }
 
 function drawGameOverScreen() {
@@ -159,6 +162,7 @@ function movePaddleTo( x ) {
 function startGame() {
   if ( state.screen !== 'start' ) return;
   state.blocks = initBlocks( LEVELS[ state.level - 1 ].rows );
+  state.ball.speed = LEVELS[ state.level - 1 ].ballSpeed;
   state.screen = 'playing';
 }
 
@@ -173,6 +177,7 @@ function restartGame() {
   state.score = 0;
   state.lives = 3;
   state.blocks = initBlocks( LEVELS[ state.level - 1 ].rows );
+  state.ball.speed = LEVELS[ state.level - 1 ].ballSpeed;
   state.explosions = [];
   resetBall();
   state.screen = 'playing';
