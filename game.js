@@ -248,6 +248,14 @@ function handleBlocksCollision() {
     block.alive = false;
     state.score += 10;
     playBreakSound();
+    state.explosions.push( {
+      x: block.x,
+      y: block.y,
+      width: block.width,
+      height: block.height,
+      color: block.color,
+      startTime: performance.now(),
+    } );
     checkWinCondition();
 
     const overlapX = Math.min( ball.x + ball.width, block.x + block.width ) - Math.max( ball.x, block.x );
