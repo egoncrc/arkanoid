@@ -231,6 +231,12 @@ function checkWinCondition() {
   }
 }
 
+function updateExplosions() {
+  state.explosions = state.explosions.filter(
+    ( explosion ) => performance.now() - explosion.startTime < EXPLOSION_DURATION
+  );
+}
+
 function handleBlocksCollision() {
   const ball = state.ball;
 
@@ -308,6 +314,7 @@ function update() {
   if ( state.screen === 'playing' ) {
     updatePaddle();
     updateBall();
+    updateExplosions();
   }
 }
 
