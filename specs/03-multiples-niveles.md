@@ -1,6 +1,6 @@
 # SPEC 03 — Múltiples niveles
 
-> **Status:** Aprobado
+> **Status:** Implementado
 > **Depends on:** SPEC 01, SPEC 02
 > **Date:** 2026-08-14
 > **Objective:** Agregar 5 niveles con layouts de bloques y velocidad de bola de dificultad creciente, con transición automática entre niveles y vidas/puntaje acumulados durante toda la partida.
@@ -97,15 +97,15 @@ Convenciones:
 
 ## Acceptance criteria
 
-- [ ] Al iniciar una partida nueva, el HUD muestra "Nivel: 1/5" junto al puntaje y las vidas.
-- [ ] El nivel 1 usa el grid 10x6 completo (60 bloques) y `ball.speed = 5`, igual que el comportamiento actual.
-- [ ] Al romper todos los bloques del nivel 1 (y terminar sus animaciones de explosión), aparece la pantalla "¡Nivel 1 completado!" durante ~2 segundos.
-- [ ] Tras esos ~2 segundos, arranca automáticamente el nivel 2 con su propio layout (10x7 completo, 70 bloques), `ball.speed = 5.5`, la bola pegada a la paleta, y el HUD actualizado a "Nivel: 2/5".
-- [ ] El puntaje y las vidas del nivel 1 se mantienen al pasar al nivel 2 (no se resetean).
-- [ ] Los niveles 3, 4 y 5 cargan sus layouts (diamante, filas alternadas, grid grande) y velocidades (6, 6.5, 7) correctamente en su turno.
-- [ ] Al romper todos los bloques del nivel 5 (el último), la pantalla que aparece es "¡Ganaste!" con el puntaje final acumulado, no "Nivel completado".
-- [ ] Perder las 3 vidas en cualquier nivel muestra "Game Over"; reiniciar desde ahí vuelve siempre al nivel 1, con su layout y velocidad originales, puntaje en 0 y 3 vidas.
-- [ ] Abrir `index.html` directamente en el navegador sigue funcionando sin errores en consola ni build adicional.
+- [x] Al iniciar una partida nueva, el HUD muestra "Nivel: 1/5" junto al puntaje y las vidas.
+- [x] El nivel 1 usa el grid 10x6 completo (60 bloques) y `ball.speed = 5`, igual que el comportamiento actual.
+- [x] Al romper todos los bloques del nivel 1 (y terminar sus animaciones de explosión), aparece la pantalla "¡Nivel 1 completado!" durante ~2 segundos.
+- [x] Tras esos ~2 segundos, arranca automáticamente el nivel 2 con su propio layout (10x7 completo, 70 bloques), `ball.speed = 5.5`, la bola pegada a la paleta, y el HUD actualizado a "Nivel: 2/5".
+- [x] El puntaje y las vidas del nivel 1 se mantienen al pasar al nivel 2 (no se resetean).
+- [x] Los niveles 3, 4 y 5 cargan sus layouts (diamante, filas alternadas, grid grande) y velocidades (6, 6.5, 7) correctamente en su turno.
+- [x] Al romper todos los bloques del nivel 5 (el último), la pantalla que aparece es "¡Ganaste!" con el puntaje final acumulado, no "Nivel completado".
+- [x] Perder las 3 vidas en cualquier nivel muestra "Game Over"; reiniciar desde ahí vuelve siempre al nivel 1, con su layout y velocidad originales, puntaje en 0 y 3 vidas.
+- [x] Abrir `index.html` directamente en el navegador sigue funcionando sin errores en consola ni build adicional.
 
 ---
 
