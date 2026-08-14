@@ -184,9 +184,11 @@ function launchBall() {
 function restartGame() {
   state.score = 0;
   state.lives = 3;
+  state.level = 1;
   state.blocks = initBlocks( LEVELS[ state.level - 1 ].rows );
   state.ball.speed = LEVELS[ state.level - 1 ].ballSpeed;
   state.explosions = [];
+  state.levelTransitionStart = null;
   resetBall();
   state.screen = 'playing';
 }
