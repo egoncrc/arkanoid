@@ -73,6 +73,10 @@ function drawPaddle() {
   drawSprite( ctx, 'paddle', state.paddle.x, state.paddle.y, state.paddle.width, state.paddle.height );
 }
 
+function drawBall() {
+  drawSprite( ctx, 'ball', state.ball.x, state.ball.y, state.ball.width, state.ball.height );
+}
+
 function movePaddleTo( x ) {
   state.paddle.x = Math.max( 0, Math.min( canvas.width - state.paddle.width, x ) );
 }
@@ -81,6 +85,21 @@ function startGame() {
   if ( state.screen !== 'start' ) return;
   state.blocks = initBlocks();
   state.screen = 'playing';
+}
+
+function launchBall() {
+  const angle = Math.PI / 4; // 45 grados
+  state.ball.dx = state.ball.speed * Math.cos( angle );
+  state.ball.dy = -state.ball.speed * Math.sin( angle );
+  state.ball.attached = false;
+}
+
+function handleLaunchInput() {
+  if ( state.screen === 'start' ) {
+    startGame();
+  } else if ( state.screen === 'playing' && state.ball.attached ) {
+    launchBall();
+  }
 }
 
 const keys = { ArrowLeft: false, ArrowRight: false };
@@ -94,9 +113,19 @@ function updatePaddle() {
   }
 }
 
+function updateBall() {
+  if ( state.ball.attached ) {
+    state.ball.x = state.paddle.x + state.paddle.width / 2 - state.ball.width / 2;
+  } else {
+    state.ball.x += state.ball.dx;
+    state.ball.y += state.ball.dy;
+  }
+}
+
 function update() {
   if ( state.screen === 'playing' ) {
     updatePaddle();
+    updateBall();
   }
 }
 
@@ -107,6 +136,7 @@ function draw() {
   } else if ( state.screen === 'playing' ) {
     drawBlocks();
     drawPaddle();
+    drawBall();
   }
 }
 
@@ -118,7 +148,7 @@ function loop() {
 
 document.addEventListener( 'keydown', ( e ) => {
   if ( e.code === 'Space' ) {
-    startGame();
+    handleLaunchInput();
   }
   if ( e.code === 'ArrowLeft' || e.code === 'ArrowRight' ) {
     keys[ e.code ] = true;
@@ -132,7 +162,7 @@ document.addEventListener( 'keyup', ( e ) => {
 } );
 
 canvas.addEventListener( 'click', () => {
-  startGame();
+  handleLaunchInput();
 } );
 
 canvas.addEventListener( 'mousemove', ( e ) => {
