@@ -138,6 +138,33 @@ function handleWallCollisions() {
   }
 }
 
+function handlePaddleCollision() {
+  const ball = state.ball;
+  const paddle = state.paddle;
+
+  const isOverlapping =
+    ball.dy > 0 &&
+    ball.y + ball.height >= paddle.y &&
+    ball.y <= paddle.y + paddle.height &&
+    ball.x + ball.width >= paddle.x &&
+    ball.x <= paddle.x + paddle.width;
+
+  if ( !isOverlapping ) return;
+
+  ball.y = paddle.y - ball.height;
+
+  const ballCenterX = ball.x + ball.width / 2;
+  const paddleCenterX = paddle.x + paddle.width / 2;
+  const relativeIntersect = Math.max( -1, Math.min( 1, ( ballCenterX - paddleCenterX ) / ( paddle.width / 2 ) ) );
+  const maxAngle = Math.PI / 3; // 60 grados máximo desde la vertical
+  const angle = relativeIntersect * maxAngle;
+
+  ball.dx = ball.speed * Math.sin( angle );
+  ball.dy = -ball.speed * Math.cos( angle );
+
+  playBallBounce();
+}
+
 function updateBall() {
   if ( state.ball.attached ) {
     state.ball.x = state.paddle.x + state.paddle.width / 2 - state.ball.width / 2;
@@ -145,6 +172,7 @@ function updateBall() {
     state.ball.x += state.ball.dx;
     state.ball.y += state.ball.dy;
     handleWallCollisions();
+    handlePaddleCollision();
   }
 }
 
