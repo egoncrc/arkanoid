@@ -85,6 +85,15 @@ function drawBlocks() {
   } );
 }
 
+function drawExplosions() {
+  state.explosions.forEach( ( explosion ) => {
+    const elapsed = performance.now() - explosion.startTime;
+    const frameIndex = Math.min( 3, Math.floor( elapsed / ( EXPLOSION_DURATION / 4 ) ) );
+    const frame = EXPLOSION_FRAMES[ explosion.color ][ frameIndex ];
+    drawFrame( ctx, frame, explosion.x, explosion.y, explosion.width, explosion.height );
+  } );
+}
+
 function drawPaddle() {
   drawSprite( ctx, 'paddle', state.paddle.x, state.paddle.y, state.paddle.width, state.paddle.height );
 }
@@ -324,6 +333,7 @@ function draw() {
     drawStartScreen();
   } else if ( state.screen === 'playing' ) {
     drawBlocks();
+    drawExplosions();
     drawPaddle();
     drawBall();
     drawScore();
