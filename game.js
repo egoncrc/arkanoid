@@ -55,10 +55,16 @@ function initBlocks() {
 }
 
 const ballBounceSound = new Audio( 'assets/sounds/ball-bounce.mp3' );
+const breakSound = new Audio( 'assets/sounds/break-sound.mp3' );
 
 function playBallBounce() {
   ballBounceSound.currentTime = 0;
   ballBounceSound.play();
+}
+
+function playBreakSound() {
+  breakSound.currentTime = 0;
+  breakSound.play();
 }
 
 function drawStartScreen() {
@@ -82,6 +88,13 @@ function drawPaddle() {
 
 function drawBall() {
   drawSprite( ctx, 'ball', state.ball.x, state.ball.y, state.ball.width, state.ball.height );
+}
+
+function drawScore() {
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'left';
+  ctx.font = '16px sans-serif';
+  ctx.fillText( `Puntaje: ${ state.score }`, 10, 20 );
 }
 
 function movePaddleTo( x ) {
@@ -165,6 +178,37 @@ function handlePaddleCollision() {
   playBallBounce();
 }
 
+function handleBlocksCollision() {
+  const ball = state.ball;
+
+  for ( const block of state.blocks ) {
+    if ( !block.alive ) continue;
+
+    const isOverlapping =
+      ball.x + ball.width >= block.x &&
+      ball.x <= block.x + block.width &&
+      ball.y + ball.height >= block.y &&
+      ball.y <= block.y + block.height;
+
+    if ( !isOverlapping ) continue;
+
+    block.alive = false;
+    state.score += 10;
+    playBreakSound();
+
+    const overlapX = Math.min( ball.x + ball.width, block.x + block.width ) - Math.max( ball.x, block.x );
+    const overlapY = Math.min( ball.y + ball.height, block.y + block.height ) - Math.max( ball.y, block.y );
+
+    if ( overlapX < overlapY ) {
+      ball.dx *= -1;
+    } else {
+      ball.dy *= -1;
+    }
+
+    break; // un solo bloque por frame
+  }
+}
+
 function updateBall() {
   if ( state.ball.attached ) {
     state.ball.x = state.paddle.x + state.paddle.width / 2 - state.ball.width / 2;
@@ -173,6 +217,7 @@ function updateBall() {
     state.ball.y += state.ball.dy;
     handleWallCollisions();
     handlePaddleCollision();
+    handleBlocksCollision();
   }
 }
 
@@ -191,6 +236,7 @@ function draw() {
     drawBlocks();
     drawPaddle();
     drawBall();
+    drawScore();
   }
 }
 
