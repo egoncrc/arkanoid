@@ -69,14 +69,35 @@ function drawBlocks() {
   } );
 }
 
+function drawPaddle() {
+  drawSprite( ctx, 'paddle', state.paddle.x, state.paddle.y, state.paddle.width, state.paddle.height );
+}
+
+function movePaddleTo( x ) {
+  state.paddle.x = Math.max( 0, Math.min( canvas.width - state.paddle.width, x ) );
+}
+
 function startGame() {
   if ( state.screen !== 'start' ) return;
   state.blocks = initBlocks();
   state.screen = 'playing';
 }
 
+const keys = { ArrowLeft: false, ArrowRight: false };
+
+function updatePaddle() {
+  if ( keys.ArrowLeft ) {
+    movePaddleTo( state.paddle.x - state.paddle.speed );
+  }
+  if ( keys.ArrowRight ) {
+    movePaddleTo( state.paddle.x + state.paddle.speed );
+  }
+}
+
 function update() {
-  // La lógica de movimiento y colisiones se implementa en pasos posteriores.
+  if ( state.screen === 'playing' ) {
+    updatePaddle();
+  }
 }
 
 function draw() {
@@ -85,6 +106,7 @@ function draw() {
     drawStartScreen();
   } else if ( state.screen === 'playing' ) {
     drawBlocks();
+    drawPaddle();
   }
 }
 
@@ -98,10 +120,26 @@ document.addEventListener( 'keydown', ( e ) => {
   if ( e.code === 'Space' ) {
     startGame();
   }
+  if ( e.code === 'ArrowLeft' || e.code === 'ArrowRight' ) {
+    keys[ e.code ] = true;
+  }
+} );
+
+document.addEventListener( 'keyup', ( e ) => {
+  if ( e.code === 'ArrowLeft' || e.code === 'ArrowRight' ) {
+    keys[ e.code ] = false;
+  }
 } );
 
 canvas.addEventListener( 'click', () => {
   startGame();
+} );
+
+canvas.addEventListener( 'mousemove', ( e ) => {
+  if ( state.screen !== 'playing' ) return;
+  const rect = canvas.getBoundingClientRect();
+  const mouseX = e.clientX - rect.left;
+  movePaddleTo( mouseX - state.paddle.width / 2 );
 } );
 
 loadSpritesheet( () => {
