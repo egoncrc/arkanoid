@@ -147,6 +147,13 @@ function drawGameOverScreen() {
   ctx.fillText( 'Presiona ESPACIO o clic para reiniciar', canvas.width / 2, canvas.height / 2 + 40 );
 }
 
+function drawLevelCompleteScreen() {
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'center';
+  ctx.font = '28px sans-serif';
+  ctx.fillText( `¡Nivel ${ state.level } completado!`, canvas.width / 2, canvas.height / 2 );
+}
+
 function drawWinScreen() {
   ctx.fillStyle = '#fff';
   ctx.textAlign = 'center';
@@ -362,6 +369,8 @@ function draw() {
     drawScore();
   } else if ( state.screen === 'gameover' ) {
     drawGameOverScreen();
+  } else if ( state.screen === 'levelComplete' ) {
+    drawLevelCompleteScreen();
   } else if ( state.screen === 'win' ) {
     drawWinScreen();
   }
