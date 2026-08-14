@@ -107,6 +107,15 @@ function drawGameOverScreen() {
   ctx.fillText( 'Presiona ESPACIO o clic para reiniciar', canvas.width / 2, canvas.height / 2 + 40 );
 }
 
+function drawWinScreen() {
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'center';
+  ctx.font = '28px sans-serif';
+  ctx.fillText( '¡Ganaste!', canvas.width / 2, canvas.height / 2 - 20 );
+  ctx.font = '18px sans-serif';
+  ctx.fillText( `Puntaje final: ${ state.score }`, canvas.width / 2, canvas.height / 2 + 10 );
+}
+
 function movePaddleTo( x ) {
   state.paddle.x = Math.max( 0, Math.min( canvas.width - state.paddle.width, x ) );
 }
@@ -198,6 +207,13 @@ function handlePaddleCollision() {
   playBallBounce();
 }
 
+function checkWinCondition() {
+  const allBroken = state.blocks.every( ( block ) => !block.alive );
+  if ( allBroken ) {
+    state.screen = 'win';
+  }
+}
+
 function handleBlocksCollision() {
   const ball = state.ball;
 
@@ -215,6 +231,7 @@ function handleBlocksCollision() {
     block.alive = false;
     state.score += 10;
     playBreakSound();
+    checkWinCondition();
 
     const overlapX = Math.min( ball.x + ball.width, block.x + block.width ) - Math.max( ball.x, block.x );
     const overlapY = Math.min( ball.y + ball.height, block.y + block.height ) - Math.max( ball.y, block.y );
@@ -280,6 +297,8 @@ function draw() {
     drawScore();
   } else if ( state.screen === 'gameover' ) {
     drawGameOverScreen();
+  } else if ( state.screen === 'win' ) {
+    drawWinScreen();
   }
 }
 
