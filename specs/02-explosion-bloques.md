@@ -1,6 +1,6 @@
 # SPEC 02 — Animación de explosión al destruir bloques
 
-> **Status:** Borrador
+> **Status:** Aprobado
 > **Depends on:** SPEC 01
 > **Date:** 2026-08-14
 > **Objective:** Reproducir la animación de 4 frames de `EXPLOSION_FRAMES` sobre el hueco de un bloque roto durante 150ms, sin cambiar la lógica de colisión instantánea ya implementada en SPEC 01.
