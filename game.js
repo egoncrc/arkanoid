@@ -97,6 +97,16 @@ function drawScore() {
   ctx.fillText( `Puntaje: ${ state.score }`, 10, 20 );
 }
 
+function drawGameOverScreen() {
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'center';
+  ctx.font = '28px sans-serif';
+  ctx.fillText( 'Game Over', canvas.width / 2, canvas.height / 2 - 20 );
+  ctx.font = '18px sans-serif';
+  ctx.fillText( `Puntaje final: ${ state.score }`, canvas.width / 2, canvas.height / 2 + 10 );
+  ctx.fillText( 'Presiona ESPACIO o clic para reiniciar', canvas.width / 2, canvas.height / 2 + 40 );
+}
+
 function movePaddleTo( x ) {
   state.paddle.x = Math.max( 0, Math.min( canvas.width - state.paddle.width, x ) );
 }
@@ -209,6 +219,26 @@ function handleBlocksCollision() {
   }
 }
 
+const BALL_PADDLE_OFFSET = 2;
+
+function resetBall() {
+  state.ball.dx = 0;
+  state.ball.dy = 0;
+  state.ball.attached = true;
+  state.ball.y = state.paddle.y - state.ball.height + BALL_PADDLE_OFFSET;
+  state.ball.x = state.paddle.x + state.paddle.width / 2 - state.ball.width / 2;
+}
+
+function handleBallOutOfBounds() {
+  if ( state.ball.y <= canvas.height ) return;
+
+  state.lives -= 1;
+  if ( state.lives <= 0 ) {
+    state.screen = 'gameover';
+  }
+  resetBall();
+}
+
 function updateBall() {
   if ( state.ball.attached ) {
     state.ball.x = state.paddle.x + state.paddle.width / 2 - state.ball.width / 2;
@@ -218,6 +248,7 @@ function updateBall() {
     handleWallCollisions();
     handlePaddleCollision();
     handleBlocksCollision();
+    handleBallOutOfBounds();
   }
 }
 
@@ -237,6 +268,8 @@ function draw() {
     drawPaddle();
     drawBall();
     drawScore();
+  } else if ( state.screen === 'gameover' ) {
+    drawGameOverScreen();
   }
 }
 
