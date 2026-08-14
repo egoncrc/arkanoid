@@ -54,6 +54,13 @@ function initBlocks() {
   return blocks;
 }
 
+const ballBounceSound = new Audio( 'assets/sounds/ball-bounce.mp3' );
+
+function playBallBounce() {
+  ballBounceSound.currentTime = 0;
+  ballBounceSound.play();
+}
+
 function drawStartScreen() {
   ctx.fillStyle = '#fff';
   ctx.textAlign = 'center';
@@ -113,12 +120,31 @@ function updatePaddle() {
   }
 }
 
+function handleWallCollisions() {
+  const ball = state.ball;
+  if ( ball.x <= 0 ) {
+    ball.x = 0;
+    ball.dx *= -1;
+    playBallBounce();
+  } else if ( ball.x + ball.width >= canvas.width ) {
+    ball.x = canvas.width - ball.width;
+    ball.dx *= -1;
+    playBallBounce();
+  }
+  if ( ball.y <= 0 ) {
+    ball.y = 0;
+    ball.dy *= -1;
+    playBallBounce();
+  }
+}
+
 function updateBall() {
   if ( state.ball.attached ) {
     state.ball.x = state.paddle.x + state.paddle.width / 2 - state.ball.width / 2;
   } else {
     state.ball.x += state.ball.dx;
     state.ball.y += state.ball.dy;
+    handleWallCollisions();
   }
 }
 
