@@ -6,6 +6,7 @@ const state = {
   score: 0,
   lives: 3,
   level: 1,             // nivel actual, 1-indexado (1 a LEVELS.length)
+  levelTransitionStart: null, // performance.now() al entrar a 'levelComplete', null si no aplica
   paddle: {
     x: 320,             // esquina superior izquierda, origen top-left
     y: 560,
@@ -251,7 +252,12 @@ function handlePaddleCollision() {
 
 function checkWinCondition() {
   const allBroken = state.blocks.every( ( block ) => !block.alive );
-  if ( allBroken && state.explosions.length === 0 ) {
+  if ( !allBroken || state.explosions.length !== 0 ) return;
+
+  if ( state.level < LEVELS.length ) {
+    state.screen = 'levelComplete';
+    state.levelTransitionStart = performance.now();
+  } else {
     state.screen = 'win';
   }
 }
