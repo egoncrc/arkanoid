@@ -1,6 +1,6 @@
 # SPEC 02 — Animación de explosión al destruir bloques
 
-> **Status:** Aprobado
+> **Status:** Implementado
 > **Depends on:** SPEC 01
 > **Date:** 2026-08-14
 > **Objective:** Reproducir la animación de 4 frames de `EXPLOSION_FRAMES` sobre el hueco de un bloque roto durante 150ms, sin cambiar la lógica de colisión instantánea ya implementada en SPEC 01.
@@ -61,14 +61,14 @@ Convenciones:
 
 ## Acceptance criteria
 
-- [ ] Romper un bloque reproduce la animación de 4 frames de `EXPLOSION_FRAMES[color]` en la posición exacta del bloque, escalada a 76x28px.
-- [ ] La animación completa dura ~150ms (4 frames de ~37.5ms cada uno) y luego desaparece sin dejar rastro visual.
-- [ ] El bloque deja de participar en colisiones desde el instante del impacto, igual que antes, aunque la animación siga visible unos milisegundos más.
-- [ ] Romper varios bloques en frames consecutivos muestra sus animaciones de explosión superpuestas en el tiempo sin errores en consola.
-- [ ] `break-sound.mp3` se sigue reproduciendo en el instante del impacto, sin cambios respecto al comportamiento actual.
-- [ ] La bola y la paleta se siguen moviendo con normalidad mientras una explosión se reproduce.
-- [ ] Al romper los 60 bloques del nivel, la pantalla "¡Ganaste!" aparece solo después de que termina de reproducirse la animación de explosión del último bloque roto.
-- [ ] Reiniciar la partida desde Game Over deja `state.explosions` vacío, sin animaciones residuales de la partida anterior.
+- [x] Romper un bloque reproduce la animación de 4 frames de `EXPLOSION_FRAMES[color]` en la posición exacta del bloque, escalada a 76x28px.
+- [x] La animación completa dura ~150ms (4 frames de ~37.5ms cada uno) y luego desaparece sin dejar rastro visual.
+- [x] El bloque deja de participar en colisiones desde el instante del impacto, igual que antes, aunque la animación siga visible unos milisegundos más.
+- [x] Romper varios bloques en frames consecutivos muestra sus animaciones de explosión superpuestas en el tiempo sin errores en consola.
+- [x] `break-sound.mp3` se sigue reproduciendo en el instante del impacto, sin cambios respecto al comportamiento actual.
+- [x] La bola y la paleta se siguen moviendo con normalidad mientras una explosión se reproduce.
+- [x] Al romper los 60 bloques del nivel, la pantalla "¡Ganaste!" aparece solo después de que termina de reproducirse la animación de explosión del último bloque roto.
+- [x] Reiniciar la partida desde Game Over deja `state.explosions` vacío, sin animaciones residuales de la partida anterior.
 
 ---
 
