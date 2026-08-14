@@ -124,11 +124,21 @@ function launchBall() {
   state.ball.attached = false;
 }
 
+function restartGame() {
+  state.score = 0;
+  state.lives = 3;
+  state.blocks = initBlocks();
+  resetBall();
+  state.screen = 'playing';
+}
+
 function handleLaunchInput() {
   if ( state.screen === 'start' ) {
     startGame();
   } else if ( state.screen === 'playing' && state.ball.attached ) {
     launchBall();
+  } else if ( state.screen === 'gameover' ) {
+    restartGame();
   }
 }
 
