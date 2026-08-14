@@ -27,6 +27,33 @@ const state = {
   ],
 };
 
+const BLOCK_COLS = 10;
+const BLOCK_ROWS = 6;
+const BLOCK_WIDTH = 76;
+const BLOCK_HEIGHT = 28;
+const BLOCK_GAP = 4;
+const BLOCK_TOP_MARGIN = 40;
+const BLOCK_COLORS = [ 'red', 'yellow', 'cyan', 'magenta', 'hotpink', 'green' ];
+
+function initBlocks() {
+  const totalWidth = BLOCK_COLS * BLOCK_WIDTH + ( BLOCK_COLS - 1 ) * BLOCK_GAP;
+  const leftMargin = ( canvas.width - totalWidth ) / 2;
+  const blocks = [];
+  for ( let row = 0; row < BLOCK_ROWS; row++ ) {
+    for ( let col = 0; col < BLOCK_COLS; col++ ) {
+      blocks.push( {
+        x: leftMargin + col * ( BLOCK_WIDTH + BLOCK_GAP ),
+        y: BLOCK_TOP_MARGIN + row * ( BLOCK_HEIGHT + BLOCK_GAP ),
+        width: BLOCK_WIDTH,
+        height: BLOCK_HEIGHT,
+        color: BLOCK_COLORS[ row ],
+        alive: true,
+      } );
+    }
+  }
+  return blocks;
+}
+
 function drawStartScreen() {
   ctx.fillStyle = '#fff';
   ctx.textAlign = 'center';
@@ -34,6 +61,49 @@ function drawStartScreen() {
   ctx.fillText( 'Presiona ESPACIO o clic para empezar', canvas.width / 2, canvas.height / 2 );
 }
 
+function drawBlocks() {
+  state.blocks.forEach( ( block ) => {
+    if ( block.alive ) {
+      drawSprite( ctx, `block_${ block.color }`, block.x, block.y, block.width, block.height );
+    }
+  } );
+}
+
+function startGame() {
+  if ( state.screen !== 'start' ) return;
+  state.blocks = initBlocks();
+  state.screen = 'playing';
+}
+
+function update() {
+  // La lógica de movimiento y colisiones se implementa en pasos posteriores.
+}
+
+function draw() {
+  ctx.clearRect( 0, 0, canvas.width, canvas.height );
+  if ( state.screen === 'start' ) {
+    drawStartScreen();
+  } else if ( state.screen === 'playing' ) {
+    drawBlocks();
+  }
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame( loop );
+}
+
+document.addEventListener( 'keydown', ( e ) => {
+  if ( e.code === 'Space' ) {
+    startGame();
+  }
+} );
+
+canvas.addEventListener( 'click', () => {
+  startGame();
+} );
+
 loadSpritesheet( () => {
-  drawStartScreen();
+  requestAnimationFrame( loop );
 } );
