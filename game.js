@@ -349,11 +349,25 @@ function updateBall() {
   }
 }
 
+function updateLevelTransition() {
+  if ( state.screen !== 'levelComplete' ) return;
+  if ( performance.now() - state.levelTransitionStart < LEVEL_TRANSITION_DURATION ) return;
+
+  state.level += 1;
+  state.blocks = initBlocks( LEVELS[ state.level - 1 ].rows );
+  state.ball.speed = LEVELS[ state.level - 1 ].ballSpeed;
+  resetBall();
+  state.levelTransitionStart = null;
+  state.screen = 'playing';
+}
+
 function update() {
   if ( state.screen === 'playing' ) {
     updatePaddle();
     updateBall();
     updateExplosions();
+  } else if ( state.screen === 'levelComplete' ) {
+    updateLevelTransition();
   }
 }
 
