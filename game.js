@@ -235,7 +235,7 @@ function handlePaddleCollision() {
 
 function checkWinCondition() {
   const allBroken = state.blocks.every( ( block ) => !block.alive );
-  if ( allBroken ) {
+  if ( allBroken && state.explosions.length === 0 ) {
     state.screen = 'win';
   }
 }
@@ -244,6 +244,7 @@ function updateExplosions() {
   state.explosions = state.explosions.filter(
     ( explosion ) => performance.now() - explosion.startTime < EXPLOSION_DURATION
   );
+  checkWinCondition();
 }
 
 function handleBlocksCollision() {
