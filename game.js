@@ -25,6 +25,9 @@ const state = {
   blocks: [
     // { x, y, width: 32, height: 16, color: 'red', alive: true }
   ],
+  explosions: [
+    // { x, y, width: 76, height: 28, color: 'red', startTime: 1234.5 }
+  ],
 };
 
 const BLOCK_COLS = 10;
@@ -150,6 +153,7 @@ function restartGame() {
   state.score = 0;
   state.lives = 3;
   state.blocks = initBlocks();
+  state.explosions = [];
   resetBall();
   state.screen = 'playing';
 }
