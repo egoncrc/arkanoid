@@ -5,6 +5,7 @@ const state = {
   screen: 'start',      // 'start' | 'playing' | 'gameover' | 'win'
   score: 0,
   lives: 3,
+  level: 1,             // nivel actual, 1-indexado (1 a LEVELS.length)
   paddle: {
     x: 320,             // esquina superior izquierda, origen top-left
     y: 560,
@@ -31,7 +32,6 @@ const state = {
 };
 
 const BLOCK_COLS = 10;
-const BLOCK_ROWS = 6;
 const BLOCK_WIDTH = 76;
 const BLOCK_HEIGHT = 28;
 const BLOCK_GAP = 4;
@@ -48,22 +48,23 @@ const LEVELS = [
 
 const LEVEL_TRANSITION_DURATION = 2000; // ms
 
-function initBlocks() {
+function initBlocks( layout ) {
   const totalWidth = BLOCK_COLS * BLOCK_WIDTH + ( BLOCK_COLS - 1 ) * BLOCK_GAP;
   const leftMargin = ( canvas.width - totalWidth ) / 2;
   const blocks = [];
-  for ( let row = 0; row < BLOCK_ROWS; row++ ) {
+  layout.forEach( ( rowStr, row ) => {
     for ( let col = 0; col < BLOCK_COLS; col++ ) {
+      if ( rowStr[ col ] !== 'X' ) continue;
       blocks.push( {
         x: leftMargin + col * ( BLOCK_WIDTH + BLOCK_GAP ),
         y: BLOCK_TOP_MARGIN + row * ( BLOCK_HEIGHT + BLOCK_GAP ),
         width: BLOCK_WIDTH,
         height: BLOCK_HEIGHT,
-        color: BLOCK_COLORS[ row ],
+        color: BLOCK_COLORS[ row % BLOCK_COLORS.length ],
         alive: true,
       } );
     }
-  }
+  } );
   return blocks;
 }
 
@@ -157,7 +158,7 @@ function movePaddleTo( x ) {
 
 function startGame() {
   if ( state.screen !== 'start' ) return;
-  state.blocks = initBlocks();
+  state.blocks = initBlocks( LEVELS[ state.level - 1 ].rows );
   state.screen = 'playing';
 }
 
@@ -171,7 +172,7 @@ function launchBall() {
 function restartGame() {
   state.score = 0;
   state.lives = 3;
-  state.blocks = initBlocks();
+  state.blocks = initBlocks( LEVELS[ state.level - 1 ].rows );
   state.explosions = [];
   resetBall();
   state.screen = 'playing';
